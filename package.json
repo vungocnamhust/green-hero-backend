@@ -1,0 +1,38 @@
+{
+  "name": "green-hero-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vungocnamhust/green-hero-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vungocnamhust/green-hero-backend/issues"
+  },
+  "homepage": "https://github.com/vungocnamhust/green-hero-backend#readme",
+  "dependencies": {
+    "camelcase-keys": "^7.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.12.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.13.7",
+    "mongoose-sequence": "^5.3.1",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.3",
+    "snakecase-keys": "^4.0.2",
+    "swagger-ui-express": "^4.1.6",
+    "typeorm": "0.2.30",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.5"
+  }
+}
