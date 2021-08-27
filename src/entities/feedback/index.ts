@@ -24,6 +24,9 @@ export class Feedback {
   @Column()
   content: string;
 
+  @Column({ nullable: true })
+  status: string;
+
   @Column()
   createdAt: Date;
 
