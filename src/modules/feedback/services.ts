@@ -1,5 +1,6 @@
 import { FeedbackCreateParamsType, FeedbackUpdateParamsType } from '../../types/type.feedback';
 import feedbackDao from './daos';
+import careFeedbackUserDao from '../careFeedbackUser/daos';
 import userService from '../auth/services';
 import careFeedbackUserService from '../careFeedbackUser/services';
 
@@ -39,7 +40,7 @@ const broadcastToUsers = async (feedbackId: number, userId: number) => {
   });
   console.log(userIds);
   console.log(feedbackId);
-  await careFeedbackUserService.createMany({ feedbackId: feedbackId, userIds: userIds });
+  await careFeedbackUserDao.createMany({ feedbackId: feedbackId, userIds: userIds });
   return users;
 };
 

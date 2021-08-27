@@ -5,4 +5,8 @@ const createMany = async (data: CareFeedbackUserCreateParamsType) => {
   return await careFeedbackUserDao.createMany(data);
 };
 
-export default { createMany };
+const getCareFeedbacksByUserId = async (userId: number) => {
+  return await careFeedbackUserDao.getCareFeedbacksByUserId({ userId });
+};
+
+export default { createMany, getCareFeedbacksByUserId };

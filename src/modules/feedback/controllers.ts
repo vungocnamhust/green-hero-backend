@@ -7,7 +7,7 @@ import fs from 'fs';
 import { MediaCreate } from '../../types/type.media';
 const fetch = require("node-fetch");
 import FormData from 'form-data';
-import { URLSearchParams } from 'url';
+import careFeedbackUserService from '../careFeedbackUser/services';
 import configs from '../../configs';
 const AI_DOMAIN = process.env.AI_DOMAIN
 
@@ -70,6 +70,11 @@ const getFeedbacks = async (req, res) => {
   //   throw new CustomError(codes.UNAUTHORIZED);
   // }
   const feedbacks = await feedbackService.getFeedbacksByUserId(currentUserId);
+  const careFeedbacks = await careFeedbackUserService.getCareFeedbacksByUserId(currentUserId);
+  careFeedbacks.forEach((careFeedback) => {
+    feedbacks.push(careFeedback.feedback);
+  });
+  feedbacks.sort((x, y) => { if (x.createdAt.getTime() > y.createdAt.getTime()) return 1; else return 0; });
   res.status(200).json({
     status: 'success',
     result: {
