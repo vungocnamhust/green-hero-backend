@@ -8,6 +8,7 @@ import { MediaCreate } from '../../types/type.media';
 const fetch = require("node-fetch");
 import FormData from 'form-data';
 import { URLSearchParams } from 'url';
+import configs from '../../configs';
 const AI_DOMAIN = process.env.AI_DOMAIN
 
 const createFeedback = async (req, res) => {
@@ -135,7 +136,20 @@ const broadcastToUsers = async (req, res) => {
   });
 };
 
-const getAllFeedbacks = async (req, res) => { };
+const getAllFeedbacks = async (req, res) => {
+  let { limit, offset } = req.params;
+  if (!limit) {
+    limit = configs.MAX_RECORDS_PER_REQ;
+  }
+  if (!offset) {
+    offset = 0
+  }
+  const feedbacks = await feedbackService.getAllFeedbacks({ limit: limit, offset: offset });
+  res.status(200).json({
+    status: 'success',
+    feedbacks: feedbacks,
+  });
+};
 
 async function postData(url = '', data = {}) {
   var formData = new FormData();

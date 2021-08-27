@@ -60,4 +60,27 @@ const updateFeedback = async (feedbackId: number, data: FeedbackUpdateParamsType
   return feedback;
 };
 
-export default { createFeedback, getFeedbackById, getFeedbacksByUserId, updateFeedback };
+const getAllFeedbacks = async (condition: { limit?: number; offset?: number }) => {
+  const feedbackRepository = getRepository(Feedback);
+  const conditionQuery = {
+    where: {
+      isDeleted: false,
+    },
+    order: {
+      createdAt: 'DESC',
+    },
+    skip: condition.offset || 0,
+    take: condition.limit || configs.MAX_RECORDS_PER_REQ,
+    join: {
+      alias: "feedback",
+      leftJoinAndSelect: {
+        media: "feedback.mediaList",
+      },
+    }
+  } as FindManyOptions<Feedback>;
+
+  const feedbacks = await feedbackRepository.find(conditionQuery);
+  return feedbacks;
+}
+
+export default { createFeedback, getFeedbackById, getFeedbacksByUserId, updateFeedback, getAllFeedbacks };

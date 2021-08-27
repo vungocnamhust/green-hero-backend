@@ -18,6 +18,12 @@ export type FeedbackCreateParamsType = {
   content: string;
   location?: string;
   userId: number;
+  userName: string;
+  userPhone: string;
+  province?: string;
+  ward?: string;
+  district?: string;
+  address?: string;
 };
 
 export type FeedbackUpdateParamsType = {

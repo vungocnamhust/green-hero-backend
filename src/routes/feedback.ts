@@ -24,7 +24,4 @@ router.post('/users/:userId/feedbacks/:feedbackId/broadcast', asyncMiddleware(fe
 // CMS
 router.get('/feedbacks', asyncMiddleware(feedbackController.getAllFeedbacks));
 
-// AI
-router.get('/webhook/feedbacks', asyncMiddleware(feedbackController.getAllFeedbacks));
-
 export default router;

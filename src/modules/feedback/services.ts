@@ -43,4 +43,9 @@ const broadcastToUsers = async (feedbackId: number, userId: number) => {
   return users;
 };
 
-export default { createFeedback, getFeedbacksByUserId, getFeedbackById, updateFeedbackById, broadcastToUsers };
+const getAllFeedbacks = async (data: { limit?: number, offset?: number }) => {
+  const feedbacks = await feedbackDao.getAllFeedbacks(data);
+  return feedbacks;
+}
+
+export default { createFeedback, getFeedbacksByUserId, getFeedbackById, updateFeedbackById, broadcastToUsers, getAllFeedbacks };
