@@ -2,10 +2,10 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMan
 import { User } from '../user';
 import 'reflect-metadata';
 import { Media } from '../media';
-import { CareArticleUser } from '../careArticleUser';
+import { CareFeedbackUser } from '../careFeedbackUser';
 
 @Entity()
-export class Article {
+export class Feedback {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -36,7 +36,7 @@ export class Article {
   @Column()
   userId: number;
 
-  @ManyToOne((type) => User, (user) => user.articles) @JoinColumn({ name: 'userId' }) user: User;
-  @OneToMany((type) => Media, (media) => media.article) mediaList: Media[];
-  @OneToMany((type) => CareArticleUser, (careArticleUser) => careArticleUser.article) careArticleUsers: CareArticleUser[];
+  @ManyToOne((type) => User, (user) => user.feedbacks) @JoinColumn({ name: 'userId' }) user: User;
+  @OneToMany((type) => Media, (media) => media.feedback) mediaList: Media[];
+  @OneToMany((type) => CareFeedbackUser, (careFeedbackUser) => careFeedbackUser.feedback) careFeedbackUsers: CareFeedbackUser[];
 }

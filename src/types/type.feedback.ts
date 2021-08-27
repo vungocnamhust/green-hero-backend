@@ -1,4 +1,4 @@
-export type ArticleType = {
+export type FeedbackType = {
   id: number;
   title: string;
   description: string;
@@ -11,7 +11,7 @@ export type ArticleType = {
   userId: number;
 };
 
-export type ArticleCreateParamsType = {
+export type FeedbackCreateParamsType = {
   title: string;
   description?: string;
   avatar?: string;
@@ -20,7 +20,7 @@ export type ArticleCreateParamsType = {
   userId: number;
 };
 
-export type ArticleUpdateParamsType = {
+export type FeedbackUpdateParamsType = {
   title?: string;
   description?: string;
   avatar?: string;

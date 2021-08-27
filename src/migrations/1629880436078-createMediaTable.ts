@@ -23,7 +23,7 @@ export class createMediaTable1629880436078 implements MigrationInterface {
                         type: 'varchar',
                     },
                     {
-                        name: 'articleId',
+                        name: 'feedbackId',
                         type: 'int',
                     },
                 ],
@@ -32,9 +32,9 @@ export class createMediaTable1629880436078 implements MigrationInterface {
         );
         queryRunner.clearSqlMemory();
         const foreignKey = new TableForeignKey({
-            columnNames: ['articleId'],
+            columnNames: ['feedbackId'],
             referencedColumnNames: ['id'],
-            referencedTableName: 'article',
+            referencedTableName: 'feedback',
             onDelete: 'CASCADE',
         });
         await queryRunner.createForeignKey('media', foreignKey);

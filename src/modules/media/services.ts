@@ -11,10 +11,10 @@ const find = async (data: MediaGet) => {
   return media;
 };
 
-const getArticleMediaFiles = async (data: MediaListGet) => {
+const getFeedbackMediaFiles = async (data: MediaListGet) => {
   let mediaList = [];
-  let { articleId } = data;
-  const mediaListData = await mediaDao.findAll({ articleId });
+  let { feedbackId } = data;
+  const mediaListData = await mediaDao.findAll({ feedbackId });
   mediaListData.forEach((media) => {
     if (!media) {
       return null;
@@ -25,10 +25,10 @@ const getArticleMediaFiles = async (data: MediaListGet) => {
   return mediaList;
 };
 
-// const getArticlesMediaFiles = async (data: MediaListGet[]) => {
+// const getFeedbacksMediaFiles = async (data: MediaListGet[]) => {
 //     let mediaList = [];
-//     let { articleId } = data
-//     const mediaListData = await mediaDao.findAll({ articleId });
+//     let { feedbackId } = data
+//     const mediaListData = await mediaDao.findAll({ feedbackId });
 //     mediaListData.forEach((media) => {
 //         if (!media) {
 //             return null;
@@ -38,4 +38,4 @@ const getArticleMediaFiles = async (data: MediaListGet) => {
 //     });
 //     return mediaList;
 // }
-export default { createMany, find, getArticleMediaFiles };
+export default { createMany, find, getFeedbackMediaFiles };

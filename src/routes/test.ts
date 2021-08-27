@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import asyncMiddleware from '../middlewares/async';
-import articleController from '../modules/article/controllers';
+import feedbackController from '../modules/feedback/controllers';
 const router = express.Router();
 import fs from 'fs';
 

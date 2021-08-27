@@ -1,13 +1,13 @@
 import codes from '../../errors/codes';
 import CustomError from '../../errors/customError';
-import articleService from './services';
+import feedbackService from './services';
 import mediaService from '../media/services';
 import userService from '../auth/services';
 import fs from 'fs';
 import { MediaCreate } from '../../types/type.media';
 import { userInfo } from 'node:os';
 
-const createArticle = async (req, res) => {
+const createFeedback = async (req, res) => {
   const { content, avatar, location } = req.body;
   const title = 'Phản ánh ô nhiễm nguồn nước ';
   const description = 'Phản ánh';
@@ -36,7 +36,7 @@ const createArticle = async (req, res) => {
   }
 
   // TODO: create media records for evidence of report
-  const article = await articleService.createArticle({
+  const feedback = await feedbackService.createFeedback({
     title,
     description,
     content,
@@ -44,7 +44,7 @@ const createArticle = async (req, res) => {
     location,
     userId: currentUserId,
   });
-  delete article.userId;
+  delete feedback.userId;
 
   // Storing all media in database
   if (req.files) {
@@ -53,7 +53,7 @@ const createArticle = async (req, res) => {
       let mediaRecord = {
         url: file.filename,
         type: file.mimetype,
-        articleId: article.id,
+        feedbackId: feedback.id,
       };
       mediaRecordList.push(mediaRecord);
     }
@@ -62,12 +62,12 @@ const createArticle = async (req, res) => {
   res.status(200).json({
     status: 'success',
     result: {
-      article: article,
+      feedback: feedback,
     },
   });
 };
 
-const getArticles = async (req, res) => {
+const getFeedbacks = async (req, res) => {
   const currentUserId = req.params.userId;
   // const currentUserId: number = req.user?.id;
   // if (!currentUserId) {
@@ -76,17 +76,17 @@ const getArticles = async (req, res) => {
   // if (Number(currentUserId) !== Number(userIdParams)) {
   //   throw new CustomError(codes.UNAUTHORIZED);
   // }
-  const articles = await articleService.getArticlesByUserId(currentUserId);
+  const feedbacks = await feedbackService.getFeedbacksByUserId(currentUserId);
   res.status(200).json({
     status: 'success',
     result: {
-      articles: articles,
+      feedbacks: feedbacks,
     },
   });
 };
 
-const getArticleById = async (req, res) => {
-  const id: number = req.params.articleId;
+const getFeedbackById = async (req, res) => {
+  const id: number = req.params.feedbackId;
   const userIdParams = req.params.userId;
   const currentUserId: number = req.user?.id;
   if (!currentUserId) {
@@ -95,8 +95,8 @@ const getArticleById = async (req, res) => {
   if (Number(currentUserId) !== Number(userIdParams)) {
     throw new CustomError(codes.UNAUTHORIZED);
   }
-  const response = await articleService.getArticleById(id);
-  if (Number(currentUserId) !== Number(response.article.userId)) {
+  const response = await feedbackService.getFeedbackById(id);
+  if (Number(currentUserId) !== Number(response.feedback.userId)) {
     throw new CustomError(codes.UNAUTHORIZED);
   }
   res.status(200).json({
@@ -105,8 +105,8 @@ const getArticleById = async (req, res) => {
   });
 };
 
-const updateArticleById = async (req, res) => {
-  const id: number = req.params.articleId;
+const updateFeedbackById = async (req, res) => {
+  const id: number = req.params.feedbackId;
   const userIdParams = req.params.userId;
   const currentUserId: number = req.user?.id;
   if (!currentUserId) {
@@ -116,33 +116,33 @@ const updateArticleById = async (req, res) => {
   if (Number(currentUserId) !== Number(userIdParams)) {
     throw new CustomError(codes.UNAUTHORIZED);
   }
-  const article = await articleService.updateArticleById(id, req.body);
-  if (Number(currentUserId) !== Number(article.userId)) {
+  const feedback = await feedbackService.updateFeedbackById(id, req.body);
+  if (Number(currentUserId) !== Number(feedback.userId)) {
     throw new CustomError(codes.UNAUTHORIZED);
   }
   res.status(200).json({
     status: 'success',
-    result: article,
+    result: feedback,
   });
 };
 
 const broadcastToUsers = async (req, res) => {
-  const articleId = Number.parseInt(req.params.articleId);
+  const feedbackId = Number.parseInt(req.params.feedbackId);
   const userId = Number.parseInt(req.params.userId);
   const user = userService.find({ id: userId });
   if (!user) {
     throw new CustomError(codes.USER_NOT_FOUND);
   }
-  const article = articleService.getArticleById(articleId);
-  if (!article) {
+  const feedback = feedbackService.getFeedbackById(feedbackId);
+  if (!feedback) {
     throw new CustomError(codes.NOT_FOUND);
   }
-  await articleService.broadcastToUsers(articleId, userId);
+  await feedbackService.broadcastToUsers(feedbackId, userId);
   res.status(200).json({
     status: 'success',
   });
 };
 
-const getAllArticles = async (req, res) => {};
+const getAllFeedbacks = async (req, res) => {};
 
-export default { createArticle, getAllArticles, getArticles, getArticleById, updateArticleById, broadcastToUsers };
+export default { createFeedback, getAllFeedbacks, getFeedbacks, getFeedbackById, updateFeedbackById, broadcastToUsers };

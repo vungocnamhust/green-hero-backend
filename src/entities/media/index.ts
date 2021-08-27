@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import 'reflect-metadata';
-import { Article } from '../article';
+import { Feedback } from '../feedback';
 
 @Entity()
 export class Media {
@@ -14,7 +14,7 @@ export class Media {
   type: string;
 
   @Column()
-  articleId: number;
+  feedbackId: number;
 
-  @ManyToOne((type) => Article, (article) => article.mediaList) @JoinColumn({ name: 'articleId' }) article: Article;
+  @ManyToOne((type) => Feedback, (feedback) => feedback.mediaList) @JoinColumn({ name: 'feedbackId' }) feedback: Feedback;
 }

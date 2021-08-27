@@ -8,11 +8,11 @@ import { MediaCreate, MediaType } from '../../types/type.media';
 const create = async (data: MediaCreate) => {
   return await connectionDB
     .then(async (connection) => {
-      const { url, type, articleId } = data;
+      const { url, type, feedbackId } = data;
       const media = new Media();
       media.url = url;
       media.type = type;
-      media.articleId = articleId;
+      media.feedbackId = feedbackId;
       return connection.manager.save(media);
     })
     .catch((e) => {
@@ -26,11 +26,11 @@ const createMany = async (data: MediaCreate[]) => {
   return await connectionDB
     .then(async (connection) => {
       data.forEach((mediaData) => {
-        const { url, type, articleId } = mediaData;
+        const { url, type, feedbackId } = mediaData;
         const media = new Media();
         media.url = url;
         media.type = type;
-        media.articleId = articleId;
+        media.feedbackId = feedbackId;
         mediaList.push(media);
       });
       connection.manager.save(mediaList);
@@ -55,13 +55,13 @@ const find = async (dataFind: { url: string }) => {
   return media;
 };
 
-const findAll = async (dataFind: { articleId: number }) => {
+const findAll = async (dataFind: { feedbackId: number }) => {
   const mediaReposity = getRepository(Media);
   let mediaList: MediaType[];
 
-  if (dataFind.articleId) {
+  if (dataFind.feedbackId) {
     mediaList = await mediaReposity.find({
-      where: { articleId: dataFind.articleId },
+      where: { feedbackId: dataFind.feedbackId },
     });
   }
   return mediaList;

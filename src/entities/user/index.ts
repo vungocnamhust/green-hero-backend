@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Article } from '../article';
-import { CareArticleUser } from '../careArticleUser';
+import { Feedback } from '../feedback';
+import { CareFeedbackUser } from '../careFeedbackUser';
 
 @Entity()
 export class User {
@@ -28,6 +28,6 @@ export class User {
   @Column({ nullable: true })
   address?: string | null;
 
-  @OneToMany((type) => Article, (article) => article.user) articles: Article[];
-  @OneToMany((type) => CareArticleUser, (careArticleUser) => careArticleUser.user) careArticleUsers: CareArticleUser[];
+  @OneToMany((type) => Feedback, (feedback) => feedback.user) feedbacks: Feedback[];
+  @OneToMany((type) => CareFeedbackUser, (careFeedbackUser) => careFeedbackUser.user) careFeedbackUsers: CareFeedbackUser[];
 }

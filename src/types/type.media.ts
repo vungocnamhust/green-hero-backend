@@ -2,13 +2,13 @@ export type MediaType = {
     id: number;
     url: string;
     type: string;
-    articleId: number;
+    feedbackId: number;
 };
 
 export type MediaCreate = {
     url: string;
     type: string;
-    articleId: number;
+    feedbackId: number;
 };
 
 export type MediaGet = {
@@ -16,5 +16,5 @@ export type MediaGet = {
 };
 
 export type MediaListGet = {
-    articleId: number;
+    feedbackId: number;
 };

@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
 
-export class createArticlesTable1616165184964 implements MigrationInterface {
+export class createfeedbacksTable1616165184964 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'article',
+        name: 'feedback',
         columns: [
           {
             name: 'id',
@@ -39,6 +39,30 @@ export class createArticlesTable1616165184964 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: 'province',
+            type: 'varchar',
+            isUnique: false,
+            isNullable: true,
+          },
+          {
+            name: 'district',
+            type: 'varchar',
+            isUnique: false,
+            isNullable: true,
+          },
+          {
+            name: 'ward',
+            type: 'varchar',
+            isUnique: false,
+            isNullable: true,
+          },
+          {
+            name: 'address',
+            type: 'varchar',
+            isUnique: false,
+            isNullable: true,
+          },
+          {
             name: 'updatedAt',
             type: 'datetime',
           },
@@ -65,10 +89,10 @@ export class createArticlesTable1616165184964 implements MigrationInterface {
       referencedTableName: 'user',
       onDelete: 'CASCADE',
     });
-    await queryRunner.createForeignKey('article', foreignKey);
+    await queryRunner.createForeignKey('feedback', foreignKey);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('article');
+    await queryRunner.dropTable('feedback');
   }
 }

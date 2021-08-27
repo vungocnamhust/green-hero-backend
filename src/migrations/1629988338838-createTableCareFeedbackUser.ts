@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm";
 
-export class createTableCareArticleUser1629988338838 implements MigrationInterface {
+export class createTableCareFeedbackUser1629988338838 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table({
-                name: 'care_article_user',
+                name: 'care_feedback_user',
                 columns: [
                     {
                         name: 'id',
@@ -15,7 +15,7 @@ export class createTableCareArticleUser1629988338838 implements MigrationInterfa
                         generationStrategy: 'increment',
                     },
                     {
-                        name: 'articleId',
+                        name: 'feedbackId',
                         type: 'int',
                     },
                     {
@@ -33,19 +33,19 @@ export class createTableCareArticleUser1629988338838 implements MigrationInterfa
             referencedTableName: 'user',
             onDelete: 'CASCADE',
         });
-        await queryRunner.createForeignKey('care_article_user', userForeignKey);
+        await queryRunner.createForeignKey('care_feedback_user', userForeignKey);
 
-        const articleForeignKey = new TableForeignKey({
-            columnNames: ['articleId'],
+        const feedbackForeignKey = new TableForeignKey({
+            columnNames: ['feedbackId'],
             referencedColumnNames: ['id'],
-            referencedTableName: 'article',
+            referencedTableName: 'feedback',
             onDelete: 'CASCADE',
         });
-        await queryRunner.createForeignKey('care_article_user', articleForeignKey);
+        await queryRunner.createForeignKey('care_feedback_user', feedbackForeignKey);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable('care_article_user');
+        await queryRunner.dropTable('care_feedback_user');
     }
 
 }
