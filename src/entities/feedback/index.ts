@@ -27,6 +27,24 @@ export class Feedback {
   @Column({ nullable: true })
   status: string;
 
+  @Column({ nullable: true })
+  userName?: string;
+
+  @Column({ nullable: true })
+  userPhone?: string;
+
+  @Column({ nullable: true })
+  province?: string | null;
+
+  @Column({ nullable: true })
+  district?: string | null;
+
+  @Column({ nullable: true })
+  ward?: string | null;
+
+  @Column({ nullable: true })
+  address?: string | null;
+
   @Column()
   createdAt: Date;
 

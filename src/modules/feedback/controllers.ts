@@ -8,9 +8,10 @@ import { MediaCreate } from '../../types/type.media';
 const fetch = require("node-fetch");
 import FormData from 'form-data';
 import { URLSearchParams } from 'url';
+const AI_DOMAIN = process.env.AI_DOMAIN
 
 const createFeedback = async (req, res) => {
-  const { content, avatar, location } = req.body;
+  const { content, avatar, location, province, district, ward, address, userPhone, userName } = req.body;
   const title = 'Phản ánh ô nhiễm nguồn nước ';
   const description = 'Phản ánh';
   // const currentUserId = req.user.id;
@@ -19,24 +20,7 @@ const createFeedback = async (req, res) => {
   const mediaRecordList = Array<MediaCreate>();
 
   // TODO: send image to AI server
-  // if (req.files) {
-  //   for (let index = 0; index < req.files.length; index++) {
-  //     const file = req.files[index];
-  //     console.log('before read file');
-  //     var img = fs.readFileSync(file.path);
-  //     var encode_image = img.toString('base64');
-
-  //     // Define a JSONobject for the image attributes for sending to AI server
-  //     var media = {
-  //       contentType: file.mimetype,
-  //       image: Buffer.from(encode_image, 'base64'),
-  //     };
-  //     mediaList.push(media);
-  //     console.log('before read file');
-  //     console.log(JSON.stringify(file));
-  //   }
-  // }
-  sendImageToAIServer(req.files[0]);
+  // sendImageToAIServer(req.files);
 
   // TODO: create media records for evidence of report
   const feedback = await feedbackService.createFeedback({
@@ -45,9 +29,14 @@ const createFeedback = async (req, res) => {
     content,
     avatar,
     location,
+    userName,
+    userPhone,
+    province,
+    district,
+    ward,
+    address,
     userId: currentUserId,
   });
-  delete feedback.userId;
 
   // Storing all media in database
   if (req.files) {
