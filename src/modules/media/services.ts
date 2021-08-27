@@ -1,29 +1,29 @@
 import { MediaGet, MediaCreate, MediaListGet } from '../../types/type.media';
-import mediaDao from '../../daos/media/media';
+import mediaDao from './daos';
 import fs from 'fs';
 const createMany = async (data: MediaCreate[]) => {
-    return await mediaDao.createMany(data);
+  return await mediaDao.createMany(data);
 };
 
 const find = async (data: MediaGet) => {
-    const { url } = data;
-    const media = await mediaDao.find({ url });
-    return media;
+  const { url } = data;
+  const media = await mediaDao.find({ url });
+  return media;
 };
 
 const getArticleMediaFiles = async (data: MediaListGet) => {
-    let mediaList = [];
-    let { articleId } = data
-    const mediaListData = await mediaDao.findAll({ articleId });
-    mediaListData.forEach((media) => {
-        if (!media) {
-            return null;
-        }
-        var file = fs.readFileSync(media.url);
-        mediaList.push(file);
-    });
-    return mediaList;
-}
+  let mediaList = [];
+  let { articleId } = data;
+  const mediaListData = await mediaDao.findAll({ articleId });
+  mediaListData.forEach((media) => {
+    if (!media) {
+      return null;
+    }
+    var file = fs.readFileSync(media.url);
+    mediaList.push(file);
+  });
+  return mediaList;
+};
 
 // const getArticlesMediaFiles = async (data: MediaListGet[]) => {
 //     let mediaList = [];

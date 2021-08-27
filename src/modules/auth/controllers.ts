@@ -1,4 +1,4 @@
-import authService from '../../services/auth/auth';
+import authService from './services';
 import { User } from '../../types/type.auth';
 
 const register = async (req, res) => {

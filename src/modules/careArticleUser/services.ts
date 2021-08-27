@@ -1,4 +1,4 @@
-import careArticleUserDao from '../../daos/careArticleUser/careArticleUser';
+import careArticleUserDao from './daos';
 import { CareArticleUserCreateParamsType } from '../../types/type.careArticleUser';
 
 const createMany = async (data: CareArticleUserCreateParamsType) => {
