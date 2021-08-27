@@ -48,4 +48,8 @@ const getAllFeedbacks = async (data: { limit?: number, offset?: number }) => {
   return feedbacks;
 }
 
-export default { createFeedback, getFeedbacksByUserId, getFeedbackById, updateFeedbackById, broadcastToUsers, getAllFeedbacks };
+const count = async () => {
+  const countFeedback = await feedbackDao.countAllFeedbacks();
+  return countFeedback;
+}
+export default { createFeedback, getFeedbacksByUserId, getFeedbackById, updateFeedbackById, broadcastToUsers, getAllFeedbacks, count };

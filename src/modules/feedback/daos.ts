@@ -83,4 +83,16 @@ const getAllFeedbacks = async (condition: { limit?: number; offset?: number }) =
   return feedbacks;
 }
 
-export default { createFeedback, getFeedbackById, getFeedbacksByUserId, updateFeedback, getAllFeedbacks };
+const countAllFeedbacks = async () => {
+  const feedbackRepository = getRepository(Feedback);
+  const conditionQuery = {
+    where: {
+      isDeleted: false,
+    },
+    select: ["id"],
+  } as FindManyOptions<Feedback>;
+  const count = await feedbackRepository.count(conditionQuery);
+  return count;
+}
+
+export default { createFeedback, getFeedbackById, getFeedbacksByUserId, updateFeedback, getAllFeedbacks, countAllFeedbacks, };

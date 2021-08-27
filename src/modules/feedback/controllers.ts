@@ -145,9 +145,15 @@ const getAllFeedbacks = async (req, res) => {
     offset = 0
   }
   const feedbacks = await feedbackService.getAllFeedbacks({ limit: limit, offset: offset });
+  const totalFeedback = await feedbackService.count();
   res.status(200).json({
     status: 'success',
     feedbacks: feedbacks,
+    pagination: {
+      total: totalFeedback,
+      limit: limit,
+      offset: offset,
+    }
   });
 };
 
