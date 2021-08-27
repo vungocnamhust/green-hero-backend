@@ -1,5 +1,5 @@
 import { Register, User, UserGet } from '../../types/type.auth';
-import userDao from '../../daos/user/user';
+import userDao from './daos';
 
 const register = async (dataRegister: Register) => {
   const { phone, name, province, district, ward, address } = dataRegister;
@@ -25,6 +25,6 @@ const find = async (data: UserGet) => {
 const findMany = async (select?: (keyof User)[]) => {
   const users = await userDao.findMany({ select: select });
   return users;
-}
+};
 
 export default { register, find, findMany };

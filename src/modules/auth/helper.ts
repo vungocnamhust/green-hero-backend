@@ -1,13 +1,13 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import configs from '../../configs';
-import userDao from '../../daos/user/user';
+import userDao from './daos';
 
 export const verifyAccessToken = async (accessToken: string) => {
   const data = jwt.verify(accessToken, configs.JWT_SECRET_KEY);
   const { userId } = data as { userId: number };
 
-  const user = await userDao.findUser({ id: userId });
+  const user = await userDao.find({ id: userId });
   return user;
 };
 

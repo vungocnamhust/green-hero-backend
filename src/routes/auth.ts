@@ -1,5 +1,5 @@
 import express from 'express';
-import auth from '../controllers/auth/auth';
+import auth from '../modules/auth/controllers';
 import asyncMiddleware from '../middlewares/async';
 
 const router = express.Router();

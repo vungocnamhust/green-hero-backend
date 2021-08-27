@@ -1,7 +1,7 @@
 import { ArticleCreateParamsType, ArticleUpdateParamsType } from '../../types/type.article';
-import articleDao from '../../daos/article/article';
-import userService from '../../services/auth/auth';
-import careArticleUserService from '../../services/careArticleUser/careArticleUser';
+import articleDao from './daos';
+import userService from '../auth/services';
+import careArticleUserService from '../careArticleUser/services';
 
 const createArticle = async (article: ArticleCreateParamsType) => {
   return await articleDao.createArticle(article);
@@ -32,13 +32,15 @@ const updateArticleById = async (articleId: number, articleData: ArticleUpdatePa
 // TODO: when CMS call API check done -> broadcastToUsers
 const broadcastToUsers = async (articleId: number, userId: number) => {
   // Get all user who are near this location or like this article
-  const users = await userService.findMany(["id"]);
+  const users = await userService.findMany(['id']);
   let userIds = [];
-  users.forEach((user) => { if (user.id != userId) userIds.push(user.id) });
+  users.forEach((user) => {
+    if (user.id != userId) userIds.push(user.id);
+  });
   console.log(userIds);
   console.log(articleId);
-  await careArticleUserService.createMany({ articleId: articleId, userIds: userIds })
+  await careArticleUserService.createMany({ articleId: articleId, userIds: userIds });
   return users;
-}
+};
 
 export default { createArticle, getArticlesByUserId, getArticleById, updateArticleById, broadcastToUsers };

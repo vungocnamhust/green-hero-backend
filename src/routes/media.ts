@@ -1,6 +1,6 @@
 import express from 'express';
 import asyncMiddleware from '../middlewares/async';
-import mediaController from '../controllers/media/media';
+import mediaController from '../modules/media/controllers';
 
 const router = express.Router();
 

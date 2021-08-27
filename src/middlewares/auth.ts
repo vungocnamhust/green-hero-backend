@@ -1,6 +1,6 @@
 import codes from '../errors/codes';
 import CustomError from '../errors/customError';
-import { verifyAccessToken } from '../services/auth/helper';
+import { verifyAccessToken } from '../modules/auth/helper';
 
 const authMiddleware = async (req, res, next) => {
   if (!req.path.includes('/auth')) {

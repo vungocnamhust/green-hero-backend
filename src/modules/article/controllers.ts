@@ -1,16 +1,16 @@
 import codes from '../../errors/codes';
 import CustomError from '../../errors/customError';
-import articleService from '../../services/article/article';
-import mediaService from '../../services/media/media';
-import userService from '../../services/auth/auth';
+import articleService from './services';
+import mediaService from '../media/services';
+import userService from '../auth/services';
 import fs from 'fs';
 import { MediaCreate } from '../../types/type.media';
 import { userInfo } from 'node:os';
 
 const createArticle = async (req, res) => {
   const { content, avatar, location } = req.body;
-  const title = "Phản ánh ô nhiễm nguồn nước ";
-  const description = "Phản ánh";
+  const title = 'Phản ánh ô nhiễm nguồn nước ';
+  const description = 'Phản ánh';
   // const currentUserId = req.user.id;
   const currentUserId = req.params.userId;
   const mediaList = [];
@@ -20,23 +20,30 @@ const createArticle = async (req, res) => {
   if (req.files) {
     for (let index = 0; index < req.files.length; index++) {
       const file = req.files[index];
-      console.log("before read file");
+      console.log('before read file');
       var img = fs.readFileSync(file.path);
-      var encode_image = img.toString("base64");
+      var encode_image = img.toString('base64');
 
       // Define a JSONobject for the image attributes for sending to AI server
       var media = {
         contentType: file.mimetype,
-        image: Buffer.from(encode_image, "base64"),
+        image: Buffer.from(encode_image, 'base64'),
       };
       mediaList.push(media);
-      console.log("before read file");
+      console.log('before read file');
       console.log(JSON.stringify(file));
     }
   }
 
   // TODO: create media records for evidence of report
-  const article = await articleService.createArticle({ title, description, content, avatar, location, userId: currentUserId });
+  const article = await articleService.createArticle({
+    title,
+    description,
+    content,
+    avatar,
+    location,
+    userId: currentUserId,
+  });
   delete article.userId;
 
   // Storing all media in database
@@ -46,7 +53,7 @@ const createArticle = async (req, res) => {
       let mediaRecord = {
         url: file.filename,
         type: file.mimetype,
-        articleId: article.id
+        articleId: article.id,
       };
       mediaRecordList.push(mediaRecord);
     }
@@ -55,7 +62,7 @@ const createArticle = async (req, res) => {
   res.status(200).json({
     status: 'success',
     result: {
-      "article": article,
+      article: article,
     },
   });
 };
@@ -73,7 +80,7 @@ const getArticles = async (req, res) => {
   res.status(200).json({
     status: 'success',
     result: {
-      "articles": articles,
+      articles: articles,
     },
   });
 };
@@ -134,10 +141,8 @@ const broadcastToUsers = async (req, res) => {
   res.status(200).json({
     status: 'success',
   });
-}
+};
 
-const getAllArticles = async (req, res) => {
-
-}
+const getAllArticles = async (req, res) => {};
 
 export default { createArticle, getAllArticles, getArticles, getArticleById, updateArticleById, broadcastToUsers };
