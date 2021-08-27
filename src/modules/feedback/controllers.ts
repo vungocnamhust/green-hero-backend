@@ -5,7 +5,9 @@ import mediaService from '../media/services';
 import userService from '../auth/services';
 import fs from 'fs';
 import { MediaCreate } from '../../types/type.media';
-import { userInfo } from 'node:os';
+const fetch = require("node-fetch");
+import FormData from 'form-data';
+import { URLSearchParams } from 'url';
 
 const createFeedback = async (req, res) => {
   const { content, avatar, location } = req.body;
@@ -17,23 +19,24 @@ const createFeedback = async (req, res) => {
   const mediaRecordList = Array<MediaCreate>();
 
   // TODO: send image to AI server
-  if (req.files) {
-    for (let index = 0; index < req.files.length; index++) {
-      const file = req.files[index];
-      console.log('before read file');
-      var img = fs.readFileSync(file.path);
-      var encode_image = img.toString('base64');
+  // if (req.files) {
+  //   for (let index = 0; index < req.files.length; index++) {
+  //     const file = req.files[index];
+  //     console.log('before read file');
+  //     var img = fs.readFileSync(file.path);
+  //     var encode_image = img.toString('base64');
 
-      // Define a JSONobject for the image attributes for sending to AI server
-      var media = {
-        contentType: file.mimetype,
-        image: Buffer.from(encode_image, 'base64'),
-      };
-      mediaList.push(media);
-      console.log('before read file');
-      console.log(JSON.stringify(file));
-    }
-  }
+  //     // Define a JSONobject for the image attributes for sending to AI server
+  //     var media = {
+  //       contentType: file.mimetype,
+  //       image: Buffer.from(encode_image, 'base64'),
+  //     };
+  //     mediaList.push(media);
+  //     console.log('before read file');
+  //     console.log(JSON.stringify(file));
+  //   }
+  // }
+  sendImageToAIServer(req.files[0]);
 
   // TODO: create media records for evidence of report
   const feedback = await feedbackService.createFeedback({
@@ -143,6 +146,29 @@ const broadcastToUsers = async (req, res) => {
   });
 };
 
-const getAllFeedbacks = async (req, res) => {};
+const getAllFeedbacks = async (req, res) => { };
+
+async function postData(url = '', data = {}) {
+  var formData = new FormData();
+  formData.append('img', fs.createReadStream('./uploads/files-1630047983857.jpeg'));
+  // formData.append("img", data["img"]);
+  // Default options are marked with *
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    body: formData
+  });
+  console.log("+++++++++++++++++++++response.json()+++++++++++++++++++++");
+  console.log(response.json());
+  return response.json(); // parses JSON response into native JavaScript objects
+}
+
+function sendImageToAIServer(file) {
+  postData("http://localhost:5000/api/validate", { img: file })
+    .then(response => response.json())
+    .then(data => console.log(data));
+}
 
 export default { createFeedback, getAllFeedbacks, getFeedbacks, getFeedbackById, updateFeedbackById, broadcastToUsers };
