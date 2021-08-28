@@ -71,7 +71,7 @@ const getArticlesByUserIdFilterByTag = async (condition: { userId: number; limit
 };
 
 const getAllArticles = async (limit: number, offset: number) => {
-  const userRepository = getRepository(User);
+  const userRepository = getRepository(Article);
   const data = await userRepository
     .createQueryBuilder('a')
     .orderBy('a.createdAt', 'DESC')

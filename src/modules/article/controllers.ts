@@ -76,7 +76,9 @@ const getAllArticles = async (req, res) => {
   const articles = await articleService.getAllArticles(limit, offset);
   res.status(200).json({
     status: 'success',
-    result: articles,
+    result: {
+      articles: articles
+    },
   });
 }
 
