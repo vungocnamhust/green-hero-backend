@@ -21,7 +21,7 @@ const createFeedback = async (req, res) => {
   const mediaRecordList = Array<MediaCreate>();
 
   // TODO: send image to AI server
-  // sendImageToAIServer(req.files);
+  sendImageToAIServer(req.files);
 
   // TODO: create media records for evidence of report
   const feedback = await feedbackService.createFeedback({
@@ -164,8 +164,11 @@ const getAllFeedbacks = async (req, res) => {
 
 async function postData(url = '', data = {}) {
   var formData = new FormData();
-  formData.append('img', fs.createReadStream('./uploads/files-1630047983857.jpeg'));
-  // formData.append("img", data["img"]);
+  // formData.append('img', fs.createReadStream('./uploads/files-1630047983857.jpeg'));
+  data['img'].map(img => {
+    formData.append("img", fs.createReadStream(img['path']));
+  })
+  console.log(formData);
   // Default options are marked with *
   const response = await fetch(url, {
     method: 'POST',
@@ -179,8 +182,8 @@ async function postData(url = '', data = {}) {
   return response.json(); // parses JSON response into native JavaScript objects
 }
 
-function sendImageToAIServer(file) {
-  postData("http://localhost:5000/api/validate", { img: file })
+const sendImageToAIServer = (files) => {
+  postData("http://green-hero-ai.herokuapp.com/api/validate", { img: files })
     .then(response => response.json())
     .then(data => console.log(data));
 }
