@@ -11,6 +11,7 @@ import careFeedbackUserService from '../careFeedbackUser/services';
 import configs from '../../configs';
 const AI_DOMAIN = process.env.AI_DOMAIN;
 
+// App
 const createFeedback = async (req, res) => {
   const { content, avatar, location, province, district, ward, address, userPhone, userName } = req.body;
   const title = 'Phản ánh ô nhiễm nguồn nước ';
@@ -79,16 +80,10 @@ const createFeedback = async (req, res) => {
   
 };
 
+// App 
 const getFeedbacks = async (req, res) => {
   const currentUserId = req.params.userId;
-  // const currentUserId: number = req.user?.id;
-  // if (!currentUserId) {
-  //   throw new CustomError(codes.NOT_FOUND);
-  // }
-  // if (Number(currentUserId) !== Number(userIdParams)) {
-  //   throw new CustomError(codes.UNAUTHORIZED);
-  // }
-  const feedbacks = await feedbackService.getFeedbacksByUserId(currentUserId);
+  let feedbacks = [];
   const careFeedbacks = await careFeedbackUserService.getCareFeedbacksByUserId(currentUserId);
   careFeedbacks.forEach((careFeedback) => {
     feedbacks.push(careFeedback.feedback);
@@ -146,23 +141,20 @@ const updateFeedbackById = async (req, res) => {
   });
 };
 
+// App
 const broadcastToUsers = async (req, res) => {
   const feedbackId = Number.parseInt(req.params.feedbackId);
-  const userId = Number.parseInt(req.params.userId);
-  const user = userService.find({ id: userId });
-  if (!user) {
-    throw new CustomError(codes.USER_NOT_FOUND);
-  }
   const feedback = feedbackService.getFeedbackById(feedbackId);
   if (!feedback) {
     throw new CustomError(codes.NOT_FOUND);
   }
-  await feedbackService.broadcastToUsers(feedbackId, userId);
+  await feedbackService.broadcastToUsers(feedbackId);
   res.status(200).json({
     status: 'success',
   });
 };
 
+// CMS
 const getAllFeedbacks = async (req, res) => {
   let { limit, offset } = req.params;
   if (!limit) {
@@ -202,9 +194,9 @@ async function postData(url = '', data: { files: any[] }) {
   return response.json(); // parses JSON response into native JavaScript objects
 }
 
+// AI
 const sendImageToAIServer = (files: any[]) => {
   return postData('http://green-hero-ai.herokuapp.com/api/validate', { files })
-  
 };
 
 export default { createFeedback, getAllFeedbacks, getFeedbacks, getFeedbackById, updateFeedbackById, broadcastToUsers };

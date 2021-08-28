@@ -25,12 +25,12 @@ const updateFeedbackById = async (feedbackId: number, feedbackData: FeedbackUpda
 };
 
 // TODO: when CMS call API check done -> broadcastToUsers
-const broadcastToUsers = async (feedbackId: number, userId: number) => {
+const broadcastToUsers = async (feedbackId: number) => {
   // Get all user who are near this location or like this feedback
   const users = await userService.findMany(['id']);
   let userIds = [];
   users.forEach((user) => {
-    if (user.id != userId) userIds.push(user.id);
+    userIds.push(user.id);
   });
   console.log(userIds);
   console.log(feedbackId);

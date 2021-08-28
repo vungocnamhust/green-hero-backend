@@ -22,6 +22,6 @@ router.get('/users/:userId/feedbacks/:feedbackId', asyncMiddleware(feedbackContr
 
 // CMS
 router.get('/feedbacks', asyncMiddleware(feedbackController.getAllFeedbacks));
-router.post('/users/:userId/feedbacks/:feedbackId/broadcast', asyncMiddleware(feedbackController.broadcastToUsers));
+router.post('/feedbacks/:feedbackId/broadcast', asyncMiddleware(feedbackController.broadcastToUsers));
 
 export default router;
