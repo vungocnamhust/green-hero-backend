@@ -15,8 +15,9 @@ const createFeedback = async (req, res) => {
   const { content, avatar, location, province, district, ward, address, userPhone, userName } = req.body;
   const title = 'Phản ánh ô nhiễm nguồn nước ';
   const description = 'Phản ánh';
-  // const currentUserId = req.user.id;
-  const currentUserId = req.params.userId;
+  const user = await userService.register({ phone: userPhone, name: userName });
+  const currentUserId = user.id;
+  console.log(currentUserId);
   const mediaList = [];
   const mediaRecordList = Array<MediaCreate>();
 

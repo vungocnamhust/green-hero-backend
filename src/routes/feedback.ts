@@ -15,11 +15,10 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 
-router.post('/users/:userId/feedbacks', upload.array('files'), asyncMiddleware(feedbackController.createFeedback));
+router.post('/feedbacks', upload.array('files'), asyncMiddleware(feedbackController.createFeedback));
 router.put('/users/:userId/feedbacks/:feedbackId', asyncMiddleware(feedbackController.updateFeedbackById));
 router.get('/users/:userId/feedbacks', asyncMiddleware(feedbackController.getFeedbacks));
 router.get('/users/:userId/feedbacks/:feedbackId', asyncMiddleware(feedbackController.getFeedbackById));
-
 
 // CMS
 router.get('/feedbacks', asyncMiddleware(feedbackController.getAllFeedbacks));
