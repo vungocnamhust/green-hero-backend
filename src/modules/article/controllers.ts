@@ -35,18 +35,7 @@ const getArticles = async (req, res) => {
 
 const getArticleById = async (req, res) => {
   const id: number = req.params.articleId;
-  const userIdParams = req.params.userId;
-  const currentUserId: number = req.user?.id;
-  if (!currentUserId) {
-    throw new CustomError(codes.NOT_FOUND);
-  }
-  if (Number(currentUserId) !== Number(userIdParams)) {
-    throw new CustomError(codes.UNAUTHORIZED);
-  }
   const response = await articleService.getArticleById(id);
-  if (Number(currentUserId) !== Number(response.article.adminId)) {
-    throw new CustomError(codes.UNAUTHORIZED);
-  }
   res.status(200).json({
     status: 'success',
     result: response,
