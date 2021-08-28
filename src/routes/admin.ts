@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.post('/admins/register', asyncMiddleware(auth.register));
 router.post('/admins/login', asyncMiddleware(auth.login));
+router.post('/admins/me', asyncMiddleware(auth.me));
 
 export default router;
