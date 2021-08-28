@@ -21,4 +21,19 @@ const login = async (req, res) => {
   });
 };
 
-export default { register, login };
+const me = async (req, res) => {
+  if (req.user) {
+    const user = req.user;
+    delete user.password;
+    return res.status(200).json({
+      status: 'success',
+      result: user,
+    });
+  }
+  return res.status(403).json({
+    status: 'fail',
+    message: 'unauthenticated',
+  });
+};
+
+export default { register, login, me };
