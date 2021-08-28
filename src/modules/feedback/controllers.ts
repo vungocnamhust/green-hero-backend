@@ -5,11 +5,11 @@ import mediaService from '../media/services';
 import userService from '../auth/services';
 import fs from 'fs';
 import { MediaCreate } from '../../types/type.media';
-const fetch = require("node-fetch");
+const fetch = require('node-fetch');
 import FormData from 'form-data';
 import careFeedbackUserService from '../careFeedbackUser/services';
 import configs from '../../configs';
-const AI_DOMAIN = process.env.AI_DOMAIN
+const AI_DOMAIN = process.env.AI_DOMAIN;
 
 const createFeedback = async (req, res) => {
   const { content, avatar, location, province, district, ward, address, userPhone, userName } = req.body;
@@ -56,7 +56,7 @@ const createFeedback = async (req, res) => {
   res.status(200).json({
     status: 'success',
     result: {
-      feedback: feedback,
+      // feedback: feedback,
     },
   });
 };
@@ -75,7 +75,10 @@ const getFeedbacks = async (req, res) => {
   careFeedbacks.forEach((careFeedback) => {
     feedbacks.push(careFeedback.feedback);
   });
-  feedbacks.sort((x, y) => { if (x.createdAt.getTime() > y.createdAt.getTime()) return 1; else return 0; });
+  feedbacks.sort((x, y) => {
+    if (x.createdAt.getTime() > y.createdAt.getTime()) return 1;
+    else return 0;
+  });
   res.status(200).json({
     status: 'success',
     result: {
@@ -148,7 +151,7 @@ const getAllFeedbacks = async (req, res) => {
     limit = configs.MAX_RECORDS_PER_REQ;
   }
   if (!offset) {
-    offset = 0
+    offset = 0;
   }
   const feedbacks = await feedbackService.getAllFeedbacks({ limit: limit, offset: offset });
   const totalFeedback = await feedbackService.count();
@@ -159,34 +162,37 @@ const getAllFeedbacks = async (req, res) => {
       total: totalFeedback,
       limit: limit,
       offset: offset,
-    }
+    },
   });
 };
 
-async function postData(url = '', data = {}) {
+async function postData(url = '', data: { files: any[] }) {
   var formData = new FormData();
   // formData.append('img', fs.createReadStream('./uploads/files-1630047983857.jpeg'));
-  data['img'].map(img => {
-    formData.append("img", fs.createReadStream(img['path']));
-  })
-  console.log(formData);
+  data.files.forEach((file) => {
+    formData.append('img', fs.createReadStream(file.path));
+  });
   // Default options are marked with *
   const response = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'multipart/form-data',
+      ...formData.getHeaders(),
     },
-    body: formData
+    body: formData,
   });
-  console.log("+++++++++++++++++++++response.json()+++++++++++++++++++++");
-  console.log(response.json());
   return response.json(); // parses JSON response into native JavaScript objects
 }
 
-const sendImageToAIServer = (files) => {
-  postData("http://green-hero-ai.herokuapp.com/api/validate", { img: files })
-    .then(response => response.json())
-    .then(data => console.log(data));
-}
+const sendImageToAIServer = (files: any[]) => {
+  postData('http://green-hero-ai.herokuapp.com/api/validate', { files })
+    .then((response) => {
+      console.log('suscces:', response);
+      return response;
+    })
+    .catch((err) => {
+      console.log('error', console.log(err));
+    });
+};
 
 export default { createFeedback, getAllFeedbacks, getFeedbacks, getFeedbackById, updateFeedbackById, broadcastToUsers };
