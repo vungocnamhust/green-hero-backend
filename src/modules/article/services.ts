@@ -29,4 +29,9 @@ const updateArticleById = async (articleId: number, articleData: ArticleUpdatePa
   return await articleDao.updateArticle(articleId, articleData);
 };
 
-export default { createArticle, getArticlesByUserId, getArticleById, updateArticleById };
+const getAllArticles = async (limit, offset) => {
+  const articles = await articleDao.getAllArticles(limit, offset);
+  return articles;
+};
+
+export default { createArticle, getArticlesByUserId, getArticleById, updateArticleById, getAllArticles };

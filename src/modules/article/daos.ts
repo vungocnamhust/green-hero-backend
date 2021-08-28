@@ -70,6 +70,17 @@ const getArticlesByUserIdFilterByTag = async (condition: { userId: number; limit
   return data;
 };
 
+const getAllArticles = async (limit: number, offset: number) => {
+  const userRepository = getRepository(User);
+  const data = await userRepository
+    .createQueryBuilder('a')
+    .orderBy('a.createdAt', 'DESC')
+    .skip(offset || 0)
+    .take(limit || configs.MAX_RECORDS_PER_REQ)
+    .getMany();
+  return data;
+}
+
 export default {
   createArticle,
   getArticleById,
@@ -77,4 +88,5 @@ export default {
   updateArticle,
   getArticlesByTagId,
   getArticlesByUserIdFilterByTag,
+  getAllArticles,
 };

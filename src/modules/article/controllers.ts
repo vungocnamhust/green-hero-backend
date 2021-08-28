@@ -65,4 +65,19 @@ const updateArticleById = async (req, res) => {
   });
 };
 
-export default { createArticle, getArticles, getArticleById, updateArticleById };
+const getAllArticles = async (req, res) => {
+  let { limit, offset } = req.params;
+  if (!limit) {
+    limit = 5;
+  }
+  if (!offset) {
+    offset = 0;
+  }
+  const articles = await articleService.getAllArticles(limit, offset);
+  res.status(200).json({
+    status: 'success',
+    result: articles,
+  });
+}
+
+export default { createArticle, getArticles, getArticleById, updateArticleById, getAllArticles };

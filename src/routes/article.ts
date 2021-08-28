@@ -7,5 +7,6 @@ router.post('/admins/:userId/articles', asyncMiddleware(articleController.create
 router.put('/admins/:userId/articles/:articleId', asyncMiddleware(articleController.updateArticleById));
 router.get('/admins/:userId/articles', asyncMiddleware(articleController.getArticles));
 router.get('/articles/:articleId', asyncMiddleware(articleController.getArticleById));
+router.get('/articles', asyncMiddleware(articleController.getAllArticles));
 
 export default router;
