@@ -6,7 +6,7 @@ import errorHandler from './middlewares/errorHandler';
 import authMiddleware from './middlewares/auth';
 import asyncMiddleware from './middlewares/async';
 import cors from 'cors';
-const path = require('path')
+const path = require('path');
 
 dotenv.config();
 const app = express();
@@ -14,10 +14,10 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 // app.use("/media",express.static('uploads'))
 
-// app.use(asyncMiddleware(authMiddleware));
+app.use(asyncMiddleware(authMiddleware));
 /* routes */
 routes(app).then(() => {
   app.use(errorHandler);

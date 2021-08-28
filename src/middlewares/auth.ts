@@ -1,9 +1,9 @@
 import codes from '../errors/codes';
 import CustomError from '../errors/customError';
-import { verifyAccessToken } from '../modules/auth/helper';
+import { verifyAccessToken } from '../modules/admin/heplers';
 
 const authMiddleware = async (req, res, next) => {
-  if (!req.path.includes('/auth')) {
+  if (req.path.includes('/admin')) {
     const { authorization } = req.headers;
     if (!authorization) throw new CustomError(codes.UNAUTHORIZED);
 
