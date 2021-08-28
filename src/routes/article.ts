@@ -6,6 +6,6 @@ const router = express.Router();
 router.post('/admins/:userId/articles', asyncMiddleware(articleController.createArticle));
 router.put('/admins/:userId/articles/:articleId', asyncMiddleware(articleController.updateArticleById));
 router.get('/admins/:userId/articles', asyncMiddleware(articleController.getArticles));
-router.get('/admins/:userId/articles/:articleId', asyncMiddleware(articleController.getArticleById));
+router.get('/articles/:articleId', asyncMiddleware(articleController.getArticleById));
 
 export default router;
