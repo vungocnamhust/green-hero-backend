@@ -15,14 +15,8 @@ const getFeedbacksByUserId = async (userId: number) => {
 
 const getFeedbackById = async (id: number) => {
   const feedback = await feedbackDao.getFeedbackById(id);
-  const relativeFeedbacks = await feedbackDao.getFeedbacksByUserId({
-    userId: feedback.userId,
-    exceptFeedbackId: feedback.id,
-    limit: 8,
-  });
   return {
     feedback,
-    relativeFeedbacks,
   };
 };
 
