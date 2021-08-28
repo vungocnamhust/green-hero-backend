@@ -22,43 +22,61 @@ const createFeedback = async (req, res) => {
   const mediaRecordList = Array<MediaCreate>();
 
   // TODO: send image to AI server
-  sendImageToAIServer(req.files);
+  sendImageToAIServer(req.files).then(async (response) => {
+    console.log('success:', response);
+    if(response.results.filter(
+      (item) => item == 'relevant'
+    ).length < response.results.length/2) {
+      return res.status(200).json({
+        status: "fail",
+        message: "Ảnh của bạn không liên quan đến ô nhiễm môi trường"
+      })
+    }
+    const feedback = await feedbackService.createFeedback({
+      title,
+      description,
+      content,
+      avatar,
+      location,
+      userName,
+      userPhone,
+      province,
+      district,
+      ward,
+      address,
+      userId: currentUserId,
+    });
+  
+    // Storing all media in database
+    if (req.files) {
+      for (let index = 0; index < req.files.length; index++) {
+        const file = req.files[index];
+        let mediaRecord = {
+          url: file.filename,
+          type: file.mimetype,
+          feedbackId: feedback.id,
+        };
+        mediaRecordList.push(mediaRecord);
+      }
+      await mediaService.createMany(mediaRecordList);
+    }
+    res.status(200).json({
+      status: 'success',
+      result: {
+        feedback: feedback,
+      },
+    });
+  })
+  .catch((err) => {
+    console.log('error', console.log(err));
+    return res.status(200).json({
+      status: "fail",
+      message: "Đã có lỗi xảy ra"
+    })
+  });
 
   // TODO: create media records for evidence of report
-  const feedback = await feedbackService.createFeedback({
-    title,
-    description,
-    content,
-    avatar,
-    location,
-    userName,
-    userPhone,
-    province,
-    district,
-    ward,
-    address,
-    userId: currentUserId,
-  });
-
-  // Storing all media in database
-  if (req.files) {
-    for (let index = 0; index < req.files.length; index++) {
-      const file = req.files[index];
-      let mediaRecord = {
-        url: file.filename,
-        type: file.mimetype,
-        feedbackId: feedback.id,
-      };
-      mediaRecordList.push(mediaRecord);
-    }
-    await mediaService.createMany(mediaRecordList);
-  }
-  res.status(200).json({
-    status: 'success',
-    result: {
-      // feedback: feedback,
-    },
-  });
+  
 };
 
 const getFeedbacks = async (req, res) => {
@@ -185,14 +203,8 @@ async function postData(url = '', data: { files: any[] }) {
 }
 
 const sendImageToAIServer = (files: any[]) => {
-  postData('http://green-hero-ai.herokuapp.com/api/validate', { files })
-    .then((response) => {
-      console.log('suscces:', response);
-      return response;
-    })
-    .catch((err) => {
-      console.log('error', console.log(err));
-    });
+  return postData('http://green-hero-ai.herokuapp.com/api/validate', { files })
+  
 };
 
 export default { createFeedback, getAllFeedbacks, getFeedbacks, getFeedbackById, updateFeedbackById, broadcastToUsers };
