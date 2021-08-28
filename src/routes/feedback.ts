@@ -19,9 +19,10 @@ router.post('/users/:userId/feedbacks', upload.array('files'), asyncMiddleware(f
 router.put('/users/:userId/feedbacks/:feedbackId', asyncMiddleware(feedbackController.updateFeedbackById));
 router.get('/users/:userId/feedbacks', asyncMiddleware(feedbackController.getFeedbacks));
 router.get('/users/:userId/feedbacks/:feedbackId', asyncMiddleware(feedbackController.getFeedbackById));
-router.post('/users/:userId/feedbacks/:feedbackId/broadcast', asyncMiddleware(feedbackController.broadcastToUsers));
+
 
 // CMS
 router.get('/feedbacks', asyncMiddleware(feedbackController.getAllFeedbacks));
+router.post('/users/:userId/feedbacks/:feedbackId/broadcast', asyncMiddleware(feedbackController.broadcastToUsers));
 
 export default router;
