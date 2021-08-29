@@ -25,12 +25,12 @@ const createFeedback = async (req, res) => {
   // TODO: send image to AI server
   sendImageToAIServer(req.files).then(async (response) => {
     console.log('success:', response);
-    if(response.results.filter(
+    if (response.results.filter(
       (item) => item == 'relevant'
-    ).length < response.results.length/2) {
+    ).length < response.results.length / 2) {
       return res.status(200).json({
         status: "fail",
-        message: "Ảnh của bạn không liên quan đến ô nhiễm môi trường"
+        message: "Đa phần ảnh của bạn không liên quan đến ô nhiễm môi trường"
       })
     }
     const feedback = await feedbackService.createFeedback({
@@ -47,7 +47,7 @@ const createFeedback = async (req, res) => {
       address,
       userId: currentUserId,
     });
-  
+
     // Storing all media in database
     if (req.files) {
       for (let index = 0; index < req.files.length; index++) {
@@ -56,6 +56,7 @@ const createFeedback = async (req, res) => {
           url: file.filename,
           type: file.mimetype,
           feedbackId: feedback.id,
+          status: response.results.length > index ? response.results[index] : "irrelevant",
         };
         mediaRecordList.push(mediaRecord);
       }
@@ -68,16 +69,16 @@ const createFeedback = async (req, res) => {
       },
     });
   })
-  .catch((err) => {
-    console.log('error', console.log(err));
-    return res.status(200).json({
-      status: "fail",
-      message: "Đã có lỗi xảy ra"
-    })
-  });
+    .catch((err) => {
+      console.log('error', console.log(err));
+      return res.status(200).json({
+        status: "fail",
+        message: "Đã có lỗi xảy ra"
+      })
+    });
 
   // TODO: create media records for evidence of report
-  
+
 };
 
 // App 

@@ -8,11 +8,12 @@ import { MediaCreate, MediaType } from '../../types/type.media';
 const create = async (data: MediaCreate) => {
   return await connectionDB
     .then(async (connection) => {
-      const { url, type, feedbackId } = data;
+      const { url, type, feedbackId, status } = data;
       const media = new Media();
       media.url = url;
       media.type = type;
       media.feedbackId = feedbackId;
+      media.status = status;
       return connection.manager.save(media);
     })
     .catch((e) => {
@@ -26,11 +27,12 @@ const createMany = async (data: MediaCreate[]) => {
   return await connectionDB
     .then(async (connection) => {
       data.forEach((mediaData) => {
-        const { url, type, feedbackId } = mediaData;
+        const { url, type, feedbackId, status } = mediaData;
         const media = new Media();
         media.url = url;
         media.type = type;
         media.feedbackId = feedbackId;
+        media.status = status;
         mediaList.push(media);
       });
       connection.manager.save(mediaList);

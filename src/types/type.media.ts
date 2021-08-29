@@ -3,12 +3,14 @@ export type MediaType = {
     url: string;
     type: string;
     feedbackId: number;
+    status?: string;
 };
 
 export type MediaCreate = {
     url: string;
     type: string;
     feedbackId: number;
+    status: string;
 };
 
 export type MediaGet = {

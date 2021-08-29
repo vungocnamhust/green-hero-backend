@@ -16,5 +16,8 @@ export class Media {
   @Column()
   feedbackId: number;
 
+  @Column({ nullable: true })
+  status: string;
+
   @ManyToOne((type) => Feedback, (feedback) => feedback.mediaList) @JoinColumn({ name: 'feedbackId' }) feedback: Feedback;
 }
